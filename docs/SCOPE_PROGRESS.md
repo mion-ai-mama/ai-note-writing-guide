@@ -31,7 +31,7 @@
 | 9 | フロントエンド実装(API統合) | Agent 9 | スキップ(API連携なし) |
 | 10 | E2Eテスト | Agent 10 | [x](ローカルで全STEP・コピー機能・表示を確認済み) |
 | 11 | ローカル動作確認 | Agent 11 | [x] |
-| 12 | デプロイ | Agent 12 | [ ](GitHub Pages公開設定はこれから) |
+| 12 | デプロイ | Agent 12 | [x](GitHub Pages公開済み) |
 
 ## ページ / ファイル管理表
 
@@ -50,9 +50,13 @@
 | GitHub | [x] mion-ai-mama（発信用アカウント） | リポジトリ作成・Pages公開に使用 |
 | LINE公式アカウント | [x] 既存の登録導線あり | CTAリンクは既存の本番URLを流用済み |
 
+## 公開情報
+
+- 公開URL: https://mion-ai-mama.github.io/ai-note-writing-guide/
+- GitHub Pages設定: `main` ブランチ / root（設定済み）
+
 ## 未完了・ユーザー対応が必要な項目
 
-- [ ] GitHub Pagesの公開設定
 - [ ] STEP1〜3のスクリーンショット3点（現在は【スクリーンショット】のプレースホルダー表示）
       - STEP1: Substackの登録画面
       - STEP2: Substackで記事を検索している画面
