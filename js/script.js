@@ -19,9 +19,6 @@
 
   /* ------------------------------------------------------------
      SEO・OGP・favicon の反映
-     ※ 検索エンジンやSNSのクローラーはJavaScriptを実行しない場合があるため、
-     　 description / OGP画像などは index.html の <head> 内も
-     　 あわせて書き換えることをおすすめします（README参照）。
   ------------------------------------------------------------ */
   function applyMeta(m) {
     if (!m) return;
@@ -57,7 +54,7 @@
   }
 
   /* ------------------------------------------------------------
-     1. ファーストビュー
+     1. 表紙（ファーストビュー）
   ------------------------------------------------------------ */
   function renderHero(c) {
     const root = document.getElementById("hero");
@@ -72,50 +69,18 @@
   }
 
   /* ------------------------------------------------------------
-     実例動画
+     はじめに
   ------------------------------------------------------------ */
-  function renderExampleVideo(c) {
-    const root = document.getElementById("example-video");
+  function renderIntro(c) {
+    const root = document.getElementById("intro");
     if (!root || !c) return;
-
     root.querySelector(".section__heading").innerHTML = c.heading;
-    const card = root.querySelector(".video-card");
-
-    let mediaHtml;
-    if (c.mode === "youtube" && c.youtube && c.youtube.embedUrl) {
-      mediaHtml = `
-        <div class="video-card__embed-wrap">
-          <iframe
-            src="${c.youtube.embedUrl}"
-            title="実際に作った動画"
-            allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-            loading="lazy"></iframe>
-        </div>`;
-    } else {
-      const poster = c.local && c.local.poster ? c.local.poster : "";
-      const src = c.local && c.local.src ? c.local.src : "";
-      mediaHtml = `
-        <video
-          class="video-card__player"
-          controls
-          preload="none"
-          playsinline
-          poster="${poster}"
-          aria-label="実際に作った動画">
-          <source src="${src}" type="video/mp4">
-          <p class="video-card__fallback">${c.fallbackText || ""}</p>
-        </video>`;
-    }
-
-    card.innerHTML = mediaHtml + `<p class="video-card__caption">${c.caption}</p>`;
+    root.querySelector(".prose").innerHTML = (c.paragraphs || []).map((p) => `<p>${p}</p>`).join("");
   }
 
   /* ------------------------------------------------------------
-     4〜6. STEP
+     STEP1〜5 詳細
      steps 配列の数だけ、STEPセクションをその場で組み立てます。
-     （HTML側は steps-container という空の入れ物があるだけなので、
-     　content.js の steps を増減させれば、STEPの数も自由に変わります）
   ------------------------------------------------------------ */
   function renderSteps(steps) {
     const container = document.getElementById("steps-container");
@@ -130,10 +95,54 @@
         if (step.list && step.list.length) {
           prose += '<ul class="check-list">' + step.list.map((li) => `<li>${li}</li>`).join("") + "</ul>";
         }
+        if (step.numberedList && step.numberedList.length) {
+          prose +=
+            '<ol class="numbered-box">' + step.numberedList.map((li) => `<li>${li}</li>`).join("") + "</ol>";
+        }
         prose += (step.afterParagraphs || []).map((p) => `<p>${p}</p>`).join("");
+
+        const keywordPillsHtml =
+          step.keywordPills && step.keywordPills.length
+            ? '<div class="keyword-pills">' +
+              step.keywordPills.map((k) => `<span class="keyword-pill">${escapeHtml(k)}</span>`).join("") +
+              "</div>"
+            : "";
+
+        let afterListHtml = "";
+        if (step.afterList && step.afterList.length) {
+          afterListHtml = step.afterListIntro ? `<p>${step.afterListIntro}</p>` : "";
+          afterListHtml += '<ul class="check-list">' + step.afterList.map((li) => `<li>${li}</li>`).join("") + "</ul>";
+        }
+
+        const screenshotHtml = step.screenshotPlaceholder
+          ? `<div class="screenshot-placeholder"><span class="screenshot-placeholder__icon" aria-hidden="true">📷</span><span>【スクリーンショット：${escapeHtml(
+              step.screenshotPlaceholder.label || ""
+            )}】</span></div>`
+          : "";
+
+        const promptHtml = step.prompt
+          ? `
+          <div class="prompt-box step__prompt">
+            <p class="prompt-box__heading">${step.prompt.heading}</p>
+            <p class="prompt-box__desc">${step.prompt.description}</p>
+            <pre class="prompt-box__text" id="${id}-prompt-text">${escapeHtml(step.prompt.promptText)}</pre>
+            <button
+              type="button"
+              class="btn btn--primary copy-btn"
+              data-copy-target="${id}-prompt-text"
+              aria-label="${step.prompt.heading}をコピーする">
+              <span class="copy-btn__label">${step.prompt.buttonText}</span>
+              <span class="copy-btn__done" role="status" aria-live="polite">${step.prompt.copiedText}</span>
+            </button>
+          </div>`
+          : "";
 
         const noteHtml = step.note
           ? `<div class="note-box"><p class="note-box__label">${step.note.label}</p><p>${step.note.text}</p></div>`
+          : "";
+
+        const warningHtml = step.warning
+          ? `<div class="warning-box"><p class="warning-box__label">⚠️ ${step.warning.label}</p><p>${step.warning.text}</p></div>`
           : "";
 
         return `
@@ -142,6 +151,11 @@
             <p class="step__number">${step.number}</p>
             <h2 class="step__title" id="${id}-heading">${step.title}</h2>
             <div class="prose">${prose}</div>
+            ${keywordPillsHtml}
+            ${afterListHtml}
+            ${screenshotHtml}
+            ${promptHtml}
+            ${warningHtml}
             ${noteHtml}
           </div>
         </section>`;
@@ -150,89 +164,52 @@
   }
 
   /* ------------------------------------------------------------
-     3. メインプロンプト
+     おすすめのSubstack
   ------------------------------------------------------------ */
-  function renderMainPrompt(c) {
-    const root = document.getElementById("main-prompt");
+  function renderRecommendations(c) {
+    const root = document.getElementById("recommendations");
     if (!root || !c) return;
     root.querySelector(".section__heading").innerHTML = c.heading;
-    root.querySelector(".section__desc").innerHTML = c.description;
-    const textEl = document.getElementById("main-prompt-text");
-    textEl.textContent = c.promptText;
-    const btn = root.querySelector(".copy-btn");
-    btn.setAttribute("data-copy-target", "main-prompt-text");
-    btn.querySelector(".copy-btn__label").textContent = c.buttonText;
-    btn.querySelector(".copy-btn__done").textContent = c.copiedText;
-  }
-
-  /* ------------------------------------------------------------
-     7. 結果をよくするコツ
-  ------------------------------------------------------------ */
-  const TIP_ICONS = ["📝", "🙋", "💬"];
-
-  function renderTips(c) {
-    const root = document.getElementById("tips");
-    if (!root || !c) return;
-    root.querySelector(".section__heading").innerHTML = c.heading;
+    root.querySelector(".section__desc").innerHTML = c.description || "";
     const grid = root.querySelector(".card-grid");
-    grid.innerHTML = c.cards
+    grid.innerHTML = (c.items || [])
       .map(
-        (card, i) => `
+        (item) => `
       <div class="card">
-        <span class="card__icon" aria-hidden="true">${TIP_ICONS[i] || "💡"}</span>
-        <h3 class="card__title">${card.title}</h3>
-        <p class="card__desc">${card.description}</p>
+        <h3 class="card__title">${escapeHtml(item.name)}</h3>
+        <p class="card__desc">${escapeHtml(item.desc)}</p>
+        <p class="card__who">${escapeHtml(item.who)}</p>
       </div>`
       )
       .join("");
   }
 
   /* ------------------------------------------------------------
-     8. 追加で使える質問5選
-  ------------------------------------------------------------ */
-  function renderExtraQuestions(c) {
-    const root = document.getElementById("extra-questions");
-    if (!root || !c) return;
-    root.querySelector(".section__heading").innerHTML = c.heading;
-    root.querySelector(".section__desc").innerHTML = c.description;
-    const list = document.getElementById("extra-questions-list");
-    list.innerHTML = c.questions
-      .map((q, i) => {
-        const id = "question-" + (i + 1);
-        return `
-        <div class="question-card">
-          <pre class="question-card__text" id="${id}">${escapeHtml(q)}</pre>
-          <button type="button" class="btn btn--outline copy-btn" data-copy-target="${id}" aria-label="追加質問${i + 1}をコピーする">
-            <span class="copy-btn__label">${c.buttonText}</span>
-            <span class="copy-btn__done" role="status" aria-live="polite">${c.copiedText}</span>
-          </button>
-        </div>`;
-      })
-      .join("");
-  }
-
-  /* ------------------------------------------------------------
-     9. 注意点
+     注意点
   ------------------------------------------------------------ */
   function renderCaution(c) {
     const root = document.getElementById("caution");
     if (!root || !c) return;
     root.querySelector(".section__heading").innerHTML = c.heading;
-    root.querySelector(".prose").innerHTML = c.paragraphs.map((p) => `<p>${p}</p>`).join("");
+    const warn = root.querySelector(".warning-box");
+    if (warn && c.warning) {
+      warn.querySelector(".warning-box__label").innerHTML = `⚠️ ${escapeHtml(c.warning.label)}`;
+      warn.querySelector("p:last-child").textContent = c.warning.text;
+    }
+    const list = root.querySelector(".check-list");
+    list.innerHTML = (c.list || []).map((li) => `<li>${li}</li>`).join("");
   }
 
   /* ------------------------------------------------------------
-     10. 最後の案内（CTA）
+     最後の案内（CTA）
   ------------------------------------------------------------ */
   function renderCta(c) {
     const root = document.getElementById("cta");
     if (!root || !c) return;
     root.querySelector(".cta-card__heading").innerHTML = c.heading;
-    const [p1, p2, p3] = c.paragraphs;
+    const [p1, p2] = c.paragraphs;
     const prose = root.querySelector(".prose");
-    prose.innerHTML =
-      `<p>${p1}</p><p>${p2}</p>` +
-      `<p>${p3}<br><strong class="cta-card__highlight">${c.highlightText}</strong><br>${c.afterHighlight}</p>`;
+    prose.innerHTML = `<p>${p1}</p><p>${p2}<br><strong class="cta-card__highlight">${c.highlightText}</strong>${c.afterHighlight}</p>`;
     const btn = document.getElementById("cta-button");
     btn.setAttribute("href", c.buttonUrl);
 
@@ -244,7 +221,6 @@
       img.addEventListener(
         "error",
         () => {
-          // 画像が読み込めなかった場合は、安全のため通常のテキストボタンに戻す
           btn.classList.remove("cta-card__banner-link");
           btn.classList.add("btn", "btn--primary", "btn--large");
           btn.textContent = c.buttonText;
@@ -259,7 +235,7 @@
   }
 
   /* ------------------------------------------------------------
-     11. フッター
+     フッター
   ------------------------------------------------------------ */
   function renderFooter(c) {
     const root = document.querySelector(".footer");
@@ -346,21 +322,17 @@
       try {
         applyMeta(CONTENT.meta);
         renderHero(CONTENT.hero);
-        renderExampleVideo(CONTENT.exampleVideo);
-        renderMainPrompt(CONTENT.mainPrompt);
+        renderIntro(CONTENT.intro);
         renderSteps(CONTENT.steps);
-        renderTips(CONTENT.tips);
-        renderExtraQuestions(CONTENT.extraQuestions);
+        renderRecommendations(CONTENT.recommendations);
         renderCaution(CONTENT.caution);
         renderCta(CONTENT.cta);
         renderFooter(CONTENT.footer);
 
         const s = CONTENT.sections || {};
-        toggleSection("example-video", s.video !== false);
-        toggleSection("main-prompt", s.mainPrompt !== false);
+        toggleSection("intro", s.intro !== false);
         toggleSection("steps-container", s.steps !== false);
-        toggleSection("tips", s.tips !== false);
-        toggleSection("extra-questions", s.extraQuestions !== false);
+        toggleSection("recommendations", s.recommendations !== false);
         toggleSection("caution", s.caution !== false);
       } catch (err) {
         // content.js の書き方に誤りがある場合はここに来ます。

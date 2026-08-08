@@ -407,6 +407,94 @@ button:focus-visible {
   margin-bottom: 0;
 }
 
+.warning-box {
+  margin-top: 1.75rem;
+  background: #fff4e2;
+  border: 1px solid #f4d29a;
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.4rem;
+  color: #8a5a1f;
+}
+
+.warning-box__label {
+  font-weight: 800;
+  margin: 0 0 0.5em;
+}
+
+.warning-box p:last-child {
+  margin-bottom: 0;
+}
+
+.numbered-box {
+  margin: 0 0 1.4em;
+  padding: 1.5rem;
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-lg);
+  counter-reset: numbered-box;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9em;
+}
+
+.numbered-box li {
+  position: relative;
+  list-style: none;
+  padding-left: 1.8em;
+  counter-increment: numbered-box;
+}
+
+.numbered-box li::before {
+  content: counter(numbered-box) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-primary-dark);
+  font-weight: 800;
+}
+
+.keyword-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0 0 1.4rem;
+}
+
+.keyword-pill {
+  display: inline-block;
+  background: var(--color-accent-light);
+  color: var(--color-primary-dark);
+  border-radius: 999px;
+  padding: 0.45em 1.1em;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.screenshot-placeholder {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  background: var(--color-bg-soft);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem 1.25rem;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.screenshot-placeholder__icon {
+  font-size: 1.2rem;
+}
+
+.card__who {
+  margin: 0.6rem 0 0;
+  color: var(--color-primary-dark);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
 /* ============================================================
    プロンプトボックス（コピー機能）
 ============================================================ */
@@ -418,6 +506,20 @@ button:focus-visible {
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   box-shadow: 0 12px 28px -18px var(--color-card-shadow);
+}
+
+.step__prompt {
+  margin-top: 1.75rem;
+}
+
+.prompt-box__heading {
+  font-weight: 800;
+  margin: 0 0 0.4em;
+}
+
+.prompt-box__desc {
+  color: var(--color-text-muted);
+  margin: 0 0 1rem;
 }
 
 .prompt-box__text,
