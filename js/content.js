@@ -19,9 +19,9 @@ const CONTENT = {
   // サイト全体の設定（SEO・OGP・favicon）
   // ------------------------------------------------------------
   meta: {
-    pageTitle: "AIで海外記事をヒントにnoteを書く方法｜AI初心者でも5分で始められる実践ガイド",
+    pageTitle: "AIで海外記事をヒントにnoteを書く方法｜おすすめSubstackとプロンプト付き",
     description:
-      "海外の人気記事をAIで日本語にして、自分の言葉でnoteに仕上げる5STEPガイド。Substack登録からChatGPT活用、投稿前チェックまで。コピペで使えるプロンプト付き。",
+      "実際に参考にしているSubstackアカウントと、海外記事をnoteに仕上げるまでの手順をまとめた実践ガイド。コピペで使えるプロンプト付き。",
     // TODO: 専用のOGP画像を用意して差し替えてください（現在は暫定的にCTAバナー画像を流用しています）
     ogpImage: "https://mion-ai-mama.github.io/ai-note-writing-guide/assets/images/cta-banner.png",
     siteUrl: "https://mion-ai-mama.github.io/ai-note-writing-guide/",
@@ -32,9 +32,8 @@ const CONTENT = {
   // セクションのON/OFF
   // ------------------------------------------------------------
   sections: {
-    intro: true, // はじめに
+    recommendations: true, // おすすめのSubstack（ページの最初に表示）
     steps: true, // STEP1〜5 詳細
-    recommendations: true, // おすすめのSubstack
     caution: true, // 注意点
   },
 
@@ -48,18 +47,104 @@ const CONTENT = {
     subtitleLine1: "AI初心者でも5分で始められる",
     subtitleLine2: "実践ガイド",
     description: "海外の記事をAIで日本語にして、<br>自分の言葉でnoteに書く。<br>それだけで、ネタ切れの悩みが軽くなります。",
-    buttonText: "STEP1から見てみる",
-    buttonScrollTargetId: "step1",
+    buttonText: "おすすめ10選を見る",
+    buttonScrollTargetId: "recommendations",
   },
 
   // ------------------------------------------------------------
-  // はじめに（300字以内）
+  // おすすめのSubstack（ページの最初に表示）
   // ------------------------------------------------------------
-  intro: {
-    heading: "はじめに",
-    paragraphs: [
-      "noteのネタが思いつかない。そんなときはありませんか？<br>日本の情報だけを見ていると、内容が似てしまいがちです。",
-      "海外の記事をヒントにすると、新しい視点が見つかります。<br>このガイドでは、海外の人気記事をAIで日本語にして、自分の言葉でnoteに仕上げるまでの流れを紹介します。",
+  // 実際に参考にしている10アカウント（カテゴリ分けはご提供いただいた分類のまま採用）。
+  // 各アカウントの説明文は、提供元の文章をそのまま使わずオリジナルで書き直しています。
+  // beginnerPicks: 初心者に特におすすめしたいアカウント名を items の name と一致させて指定
+  recommendations: {
+    heading: "おすすめのSubstack10選",
+    description: "私が実際に参考にしているSubstackアカウント10選です。<br>英語ですが、ChatGPTを使えば日本語で内容をつかめます。",
+    beginnerPicks: {
+      heading: "初心者はまずこの3つから",
+      names: ["One Useful Thing", "Not Boring", "First 1000"],
+    },
+    items: [
+      {
+        category: "AI・テクノロジートレンド",
+        name: "One Useful Thing",
+        url: "https://www.oneusefulthing.org",
+        theme: "AIの実践的な活用法",
+        who: "AIを実務にどう活かすか知りたい方",
+        ideaFit: "「AIを仕事でこう使う」という具体的な活用ネタ探しに",
+      },
+      {
+        category: "AI・テクノロジートレンド",
+        name: "AI Supremacy",
+        url: "https://aisupremacy.substack.com",
+        theme: "AI業界の動向・トレンド予測",
+        who: "AI業界の大きな流れをつかみたい方",
+        ideaFit: "「これから来るAIの波」という先読みネタ探しに",
+      },
+      {
+        category: "AI・テクノロジートレンド",
+        name: "Marcus on AI",
+        url: "https://garymarcus.substack.com",
+        theme: "AIへの批判的・慎重な視点",
+        who: "AIの限界や課題も知っておきたい方",
+        ideaFit: "「AIのここが心配」という共感系ネタ探しに",
+      },
+      {
+        category: "AI・テクノロジートレンド",
+        name: "Understanding AI",
+        url: "https://www.understandingai.org",
+        theme: "AIの仕組みをやさしく解説",
+        who: "AIがどう動いているのか理解したい方",
+        ideaFit: "「AIってそういう仕組みなんだ」という解説ネタ探しに",
+      },
+      {
+        category: "マーケティング・グロース戦略",
+        name: "Lenny's Newsletter",
+        url: "https://www.lennysnewsletter.com",
+        theme: "事業成長・キャリアのノウハウ",
+        who: "仕事の進め方やキャリアを考えたい方",
+        ideaFit: "「できる人の仕事術」系のネタ探しに",
+      },
+      {
+        category: "マーケティング・グロース戦略",
+        name: "Growth Unhinged",
+        url: "https://www.growthunhinged.com",
+        theme: "価格戦略・顧客獲得",
+        who: "値付けや集客の考え方を知りたい方",
+        ideaFit: "「値段の決め方」「集客のコツ」系のネタ探しに",
+      },
+      {
+        category: "マーケティング・グロース戦略",
+        name: "First 1000",
+        url: "https://first1000.substack.com",
+        theme: "起業初期の顧客獲得ストーリー",
+        who: "何か新しいことを始めたい方",
+        ideaFit: "「最初の一歩をどう踏み出したか」という体験談ネタ探しに",
+      },
+      {
+        category: "マーケティング・グロース戦略",
+        name: "Not Boring",
+        url: "https://www.notboring.co",
+        theme: "テクノロジーと戦略を物語のように語る",
+        who: "難しい話を面白く読みたい方",
+        ideaFit: "「読ませる文章の書き方」を学ぶネタ探しに",
+      },
+      {
+        category: "ライティング・コンテンツビジネス",
+        name: "Category Pirates",
+        url: "https://categorypirates.substack.com",
+        theme: "独自のポジションの作り方",
+        who: "人と違う切り口を見つけたい方",
+        ideaFit: "「自分だけの立ち位置」を考えるネタ探しに",
+      },
+      {
+        category: "ライティング・コンテンツビジネス",
+        name: "Simon Owens's Media Newsletter",
+        url: "https://simonowens.substack.com",
+        theme: "メディア運営・コンテンツでの収益化",
+        who: "発信で収益化を目指したい方",
+        ideaFit: "「発信の収益化事例」系のネタ探しに",
+      },
     ],
   },
 
@@ -69,15 +154,13 @@ const CONTENT = {
   // { } のかたまり1つが STEP1つ分です。増減も自由です。
   // prompt: コピー用プロンプトを表示したい場合だけ設定（不要な場合は null）
   // note: 補足ボックス（水色系） / warning: 注意ボックス（黄色系）
-  // screenshotPlaceholder: 実際の画像が届くまでの仮置き表示（{ label: "〜の画面" }）
+  // screenshots: 実際の画像が届くまでの仮置き表示（[{ label: "〜の画面" }, ...]）
   // keywordPills: 検索キーワードなどを丸いタグで並べたい場合に設定
   steps: [
     {
       number: "STEP 1",
       title: "Substackに登録する",
-      paragraphs: [
-        "Substack（サブスタック）は、海外で人気のニュースレター配信サービスです。多くのライターが記事を投稿していて、無料で読むことができます。",
-      ],
+      paragraphs: ["Substack（サブスタック）は、海外で人気の無料ニュースレターサービスです。"],
       list: [],
       numberedList: [
         "Substack公式サイト（substack.com）を開く",
@@ -85,9 +168,9 @@ const CONTENT = {
         "届いた確認メールのリンクをクリックする",
         "興味のあるジャンルを選ぶ（あとから変更できます）",
       ],
-      afterParagraphs: ["登録は無料です。クレジットカードの入力は必要ありません。"],
+      afterParagraphs: ["登録は無料。クレジットカードは不要です。"],
       keywordPills: null,
-      screenshotPlaceholder: { label: "Substackの登録画面" },
+      screenshots: [{ label: "Substackのトップページ" }, { label: "登録フォームの入力画面" }],
       prompt: null,
       note: null,
       warning: null,
@@ -95,13 +178,13 @@ const CONTENT = {
     {
       number: "STEP 2",
       title: "人気記事を探す",
-      paragraphs: ["登録できたら、気になるジャンルのキーワードで記事を検索してみましょう。"],
+      paragraphs: ["気になるジャンルのキーワードで記事を検索してみましょう。"],
       list: [],
       numberedList: [],
       afterParagraphs: [],
       // 検索キーワードは丸いタグで表示
       keywordPills: ["AI", "ChatGPT", "Instagram", "Productivity"],
-      screenshotPlaceholder: { label: "Substackで記事を検索している画面" },
+      screenshots: [{ label: "キーワードで検索している画面" }, { label: "検索結果一覧の画面" }],
       prompt: null,
       note: null,
       warning: null,
@@ -111,42 +194,42 @@ const CONTENT = {
         "タイトルを見て内容がイメージしやすい記事",
         "更新が新しい記事（1年以内が目安）",
       ],
-      afterListIntro: "検索結果の中から、次のような記事を選ぶのがおすすめです。",
+      afterListIntro: "選ぶ基準は、この3つです。",
     },
     {
       number: "STEP 3",
       title: "ChatGPTで日本語にする",
-      paragraphs: ["気になる記事が見つかったら、ChatGPTを使って日本語にします。"],
+      paragraphs: ["気になる記事が見つかったら、ChatGPTで日本語にします。"],
       list: [],
       numberedList: [
-        "Substackの記事ページを開き、URLをコピーする",
-        "ChatGPTに「このURLの記事を日本語に要約してください」と伝えて、URLを貼り付ける",
-        "うまく読み込めない場合は、記事本文をコピーして直接貼り付け、「日本語に訳してください」とお願いする",
-        "気になる部分は「もっと詳しく」「初心者にもわかりやすく」と追加でお願いする",
+        "記事のURLをコピーする",
+        "ChatGPTに「このURLを日本語に要約して」と伝えて貼り付ける",
+        "読み込めない場合は本文をコピーして貼り付け、「日本語に訳して」とお願いする",
+        "気になる部分は「もっと詳しく」と追加でお願いする",
       ],
       afterParagraphs: [],
       keywordPills: null,
-      screenshotPlaceholder: { label: "ChatGPTに記事を読み込ませている画面" },
+      screenshots: [{ label: "ChatGPTにURLを貼り付けている画面" }, { label: "日本語に訳された結果の画面" }],
       prompt: null,
       note: {
         label: "補足",
-        text: "ChatGPTのプランによっては、URLをそのまま読み込めない場合があります。その場合は本文をコピーして貼り付ける方法を試してください。",
+        text: "URLを読み込めないプランもあります。その場合は本文を直接貼り付けてください。",
       },
       warning: null,
     },
     {
       number: "STEP 4",
       title: "note用にリライトする",
-      paragraphs: ["日本語になった記事の内容をもとに、note用の記事に書き直します。下のプロンプトをコピーして使ってください。"],
+      paragraphs: ["日本語にした内容をもとに、下のプロンプトでnote記事を作りましょう。"],
       list: [],
       numberedList: [],
       afterParagraphs: [],
       keywordPills: null,
-      screenshotPlaceholder: null,
+      screenshots: [{ label: "ChatGPTにプロンプトを送った結果の画面" }],
       prompt: {
         heading: "STEP4用プロンプト",
-        description: "STEP3で日本語にした記事の内容と一緒にコピーして、ChatGPTに送ってください。",
-        promptText: `以下の記事の要点をもとに、note用の記事を書いてください。
+        description: "STEP3の内容と一緒にコピーして、ChatGPTに送ってください。",
+        promptText: `以下の内容をもとに、note用の記事を書いてください。
 
 【記事の要点】
 （ここにSTEP3で日本語にした内容を貼り付ける）
@@ -154,17 +237,15 @@ const CONTENT = {
 【条件】
 
 ・タイトル案を3つ
-・導入文は100文字程度
-・見出し3つ程度で本文を構成する
 ・やさしい言葉で、自分の言葉として書く
-・原文の直訳ではなく、自分なりの視点や感想を加える`,
+・原文の直訳ではなく、自分なりの視点を加える`,
         buttonText: "この指示文をコピーする",
         copiedText: "コピーしました",
       },
       note: null,
       warning: {
         label: "ここ大事",
-        text: "そのまま翻訳して貼り付けるのではなく、自分の言葉に置き換えることが大切です。詳しくは後半の「注意点」もご確認ください。",
+        text: "自分の言葉に置き換えることが大切です。詳しくは後半の「注意点」もご確認ください。",
       },
     },
     {
@@ -180,43 +261,12 @@ const CONTENT = {
       numberedList: [],
       afterParagraphs: [],
       keywordPills: null,
-      screenshotPlaceholder: null,
+      screenshots: [],
       prompt: null,
       note: null,
       warning: null,
     },
   ],
-
-  // ------------------------------------------------------------
-  // おすすめのSubstack
-  // ------------------------------------------------------------
-  // いずれも実在するSubstack公式ニュースレターです（2026年時点で確認済み）。
-  recommendations: {
-    heading: "おすすめのSubstack",
-    description: "英語のニュースレターですが、ChatGPTを使えば日本語で内容をつかめます。<br>まずはこの4つから覗いてみてください。",
-    items: [
-      {
-        name: "The Rundown AI",
-        desc: "毎日5分で読める、世界的に人気のAIニュースレター。最新ツールや活用事例をやさしくまとめています。",
-        who: "AIの最新情報を手早くキャッチしたい方向け",
-      },
-      {
-        name: "Superhuman AI",
-        desc: "AIツールの使い方やプロンプト例を、専門知識がなくてもわかるように紹介しています。",
-        who: "仕事にAIを活かしたい方向け",
-      },
-      {
-        name: "One Useful Thing",
-        desc: "米ウォートン校の教授イーサン・モリック氏が、自ら試したAIツールについてじっくり解説しています。",
-        who: "AIの本質的な使い方を理解したい方向け",
-      },
-      {
-        name: "Ben's Bites",
-        desc: "2022年から続く老舗のAIニュースレター。日々のAI業界ニュースをコンパクトに配信しています。",
-        who: "AI業界の動きを継続的に追いたい方向け",
-      },
-    ],
-  },
 
   // ------------------------------------------------------------
   // 注意点
@@ -226,13 +276,14 @@ const CONTENT = {
     // 必ず目立つ形で表示する重要な注意（黄色系の警告ボックス）
     warning: {
       label: "必ず読んでください",
-      text: "このガイドは、海外記事をそのまま翻訳して投稿する方法ではありません。アイデアや構成を参考にし、自分の言葉で書き直すことが大切です。",
+      text: "このガイドは、海外記事をそのまま翻訳して投稿する方法ではありません。次の4点を必ず守ってください。",
     },
-    list: [
-      "海外記事の文章や画像をそのまま転載しない",
-      "引用する場合は出典（記事タイトルや著者名）を明記する",
-      "画像を使う場合は著作権・利用規約を確認する",
-      "AIが訳した内容も、最後は自分の目で確認する",
+    // 4つの注意点を「見出し＋説明」の形でまとめて表示
+    items: [
+      { title: "アイデアや構成を参考にする", text: "本文をそのまま訳さず、切り口や構成をヒントにする。" },
+      { title: "自分の言葉で書き直す", text: "AIの訳文をそのまま使わず、自分の言い回しに直す。" },
+      { title: "日本向けにアレンジする", text: "海外特有の例えや表現は、日本の読者に伝わる形に置き換える。" },
+      { title: "著作権に配慮する", text: "出典を明記し、画像を使う場合は利用規約を確認する。" },
     ],
   },
 

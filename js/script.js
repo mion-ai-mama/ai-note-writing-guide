@@ -69,16 +69,6 @@
   }
 
   /* ------------------------------------------------------------
-     はじめに
-  ------------------------------------------------------------ */
-  function renderIntro(c) {
-    const root = document.getElementById("intro");
-    if (!root || !c) return;
-    root.querySelector(".section__heading").innerHTML = c.heading;
-    root.querySelector(".prose").innerHTML = (c.paragraphs || []).map((p) => `<p>${p}</p>`).join("");
-  }
-
-  /* ------------------------------------------------------------
      STEP1〜5 詳細
      steps 配列の数だけ、STEPセクションをその場で組み立てます。
   ------------------------------------------------------------ */
@@ -114,11 +104,19 @@
           afterListHtml += '<ul class="check-list">' + step.afterList.map((li) => `<li>${li}</li>`).join("") + "</ul>";
         }
 
-        const screenshotHtml = step.screenshotPlaceholder
-          ? `<div class="screenshot-placeholder"><span class="screenshot-placeholder__icon" aria-hidden="true">📷</span><span>【スクリーンショット：${escapeHtml(
-              step.screenshotPlaceholder.label || ""
-            )}】</span></div>`
-          : "";
+        const screenshotHtml =
+          step.screenshots && step.screenshots.length
+            ? '<div class="screenshot-group">' +
+              step.screenshots
+                .map(
+                  (shot) =>
+                    `<div class="screenshot-placeholder"><span class="screenshot-placeholder__icon" aria-hidden="true">📷</span><span>【スクリーンショット：${escapeHtml(
+                      shot.label || ""
+                    )}】</span></div>`
+                )
+                .join("") +
+              "</div>"
+            : "";
 
         const promptHtml = step.prompt
           ? `
@@ -171,16 +169,44 @@
     if (!root || !c) return;
     root.querySelector(".section__heading").innerHTML = c.heading;
     root.querySelector(".section__desc").innerHTML = c.description || "";
-    const grid = root.querySelector(".card-grid");
-    grid.innerHTML = (c.items || [])
-      .map(
-        (item) => `
-      <div class="card">
-        <h3 class="card__title">${escapeHtml(item.name)}</h3>
-        <p class="card__desc">${escapeHtml(item.desc)}</p>
-        <p class="card__who">${escapeHtml(item.who)}</p>
-      </div>`
-      )
+
+    const picksEl = root.querySelector(".beginner-picks");
+    if (picksEl && c.beginnerPicks) {
+      picksEl.querySelector(".beginner-picks__label").textContent = c.beginnerPicks.heading;
+      picksEl.querySelector(".beginner-picks__names").innerHTML = (c.beginnerPicks.names || [])
+        .map((n) => `<span class="keyword-pill">${escapeHtml(n)}</span>`)
+        .join("");
+    }
+
+    const items = c.items || [];
+    const categories = [];
+    items.forEach((item) => {
+      if (!categories.includes(item.category)) categories.push(item.category);
+    });
+
+    const groupsEl = root.querySelector(".recommendation-groups");
+    groupsEl.innerHTML = categories
+      .map((category) => {
+        const cardsHtml = items
+          .filter((item) => item.category === category)
+          .map(
+            (item) => `
+          <div class="card">
+            <h3 class="card__title">
+              <a href="${item.url}" target="_blank" rel="noopener">${escapeHtml(item.name)} ↗</a>
+            </h3>
+            <span class="card__theme">${escapeHtml(item.theme)}</span>
+            <p class="card__who">${escapeHtml(item.who)}</p>
+            <p class="card__fit">💡 ${escapeHtml(item.ideaFit)}</p>
+          </div>`
+          )
+          .join("");
+        return `
+        <div class="recommendation-group">
+          ${category ? `<h3 class="recommendation-group__heading">${escapeHtml(category)}</h3>` : ""}
+          <div class="card-grid">${cardsHtml}</div>
+        </div>`;
+      })
       .join("");
   }
 
@@ -196,8 +222,16 @@
       warn.querySelector(".warning-box__label").innerHTML = `⚠️ ${escapeHtml(c.warning.label)}`;
       warn.querySelector("p:last-child").textContent = c.warning.text;
     }
-    const list = root.querySelector(".check-list");
-    list.innerHTML = (c.list || []).map((li) => `<li>${li}</li>`).join("");
+    const list = root.querySelector(".caution-items");
+    list.innerHTML = (c.items || [])
+      .map(
+        (item, i) => `
+      <li>
+        <span class="caution-items__number">${i + 1}</span>
+        <span><strong>${escapeHtml(item.title)}</strong><br>${escapeHtml(item.text)}</span>
+      </li>`
+      )
+      .join("");
   }
 
   /* ------------------------------------------------------------
@@ -322,17 +356,15 @@
       try {
         applyMeta(CONTENT.meta);
         renderHero(CONTENT.hero);
-        renderIntro(CONTENT.intro);
-        renderSteps(CONTENT.steps);
         renderRecommendations(CONTENT.recommendations);
+        renderSteps(CONTENT.steps);
         renderCaution(CONTENT.caution);
         renderCta(CONTENT.cta);
         renderFooter(CONTENT.footer);
 
         const s = CONTENT.sections || {};
-        toggleSection("intro", s.intro !== false);
-        toggleSection("steps-container", s.steps !== false);
         toggleSection("recommendations", s.recommendations !== false);
+        toggleSection("steps-container", s.steps !== false);
         toggleSection("caution", s.caution !== false);
       } catch (err) {
         // content.js の書き方に誤りがある場合はここに来ます。
