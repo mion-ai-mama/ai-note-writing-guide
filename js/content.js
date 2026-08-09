@@ -216,7 +216,13 @@ const CONTENT = {
       ],
       afterParagraphs: [],
       keywordPills: null,
-      screenshots: [{ label: "ChatGPTにURLを貼り付けている画面" }, { label: "日本語に訳された結果の画面" }],
+      // 1枚でURL貼り付け〜日本語要約の結果まで一連の流れが分かるため、1枚のみ掲載
+      screenshots: [
+        {
+          label: "ChatGPTにURLを貼り付けて日本語に要約させた画面",
+          src: "assets/images/screenshots/step3-chatgpt-translate.jpg",
+        },
+      ],
       prompt: null,
       note: {
         label: "補足",
@@ -232,7 +238,12 @@ const CONTENT = {
       numberedList: [],
       afterParagraphs: [],
       keywordPills: null,
-      screenshots: [{ label: "ChatGPTにプロンプトを送った結果の画面" }],
+      screenshots: [
+        {
+          label: "ChatGPTにプロンプトを送った結果の画面",
+          src: "assets/images/screenshots/step4-chatgpt-result.jpg",
+        },
+      ],
       prompt: {
         heading: "STEP4用プロンプト",
         description: "STEP3の内容と一緒にコピーして、ChatGPTに送ってください。",
