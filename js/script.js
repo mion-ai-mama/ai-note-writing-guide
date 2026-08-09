@@ -108,11 +108,14 @@
           step.screenshots && step.screenshots.length
             ? '<div class="screenshot-group">' +
               step.screenshots
-                .map(
-                  (shot) =>
-                    `<div class="screenshot-placeholder"><span class="screenshot-placeholder__icon" aria-hidden="true">📷</span><span>【スクリーンショット：${escapeHtml(
-                      shot.label || ""
-                    )}】</span></div>`
+                .map((shot) =>
+                  shot.src
+                    ? `<figure class="screenshot-card"><img src="${shot.src}" alt="${escapeHtml(
+                        shot.label || ""
+                      )}" loading="lazy"><figcaption>${escapeHtml(shot.label || "")}</figcaption></figure>`
+                    : `<div class="screenshot-placeholder"><span class="screenshot-placeholder__icon" aria-hidden="true">📷</span><span>【スクリーンショット：${escapeHtml(
+                        shot.label || ""
+                      )}】</span></div>`
                 )
                 .join("") +
               "</div>"

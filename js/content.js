@@ -170,7 +170,11 @@ const CONTENT = {
       ],
       afterParagraphs: ["登録は無料。クレジットカードは不要です。"],
       keywordPills: null,
-      screenshots: [{ label: "Substackのトップページ" }, { label: "登録フォームの入力画面" }],
+      screenshots: [
+        { label: "Substackのトップページ", src: "assets/images/screenshots/step1-top-page.jpg" },
+        { label: "登録フォームの入力画面", src: "assets/images/screenshots/step1-register-form.jpg" },
+        { label: "プロフィール入力画面", src: "assets/images/screenshots/step1-profile-setup.jpg" },
+      ],
       prompt: null,
       note: null,
       warning: null,
@@ -184,7 +188,10 @@ const CONTENT = {
       afterParagraphs: [],
       // 検索キーワードは丸いタグで表示
       keywordPills: ["AI", "ChatGPT", "Instagram", "Productivity"],
-      screenshots: [{ label: "キーワードで検索している画面" }, { label: "検索結果一覧の画面" }],
+      screenshots: [
+        { label: "キーワードで検索している画面", src: "assets/images/screenshots/step2-search-keyword.jpg" },
+        { label: "検索結果一覧の画面", src: "assets/images/screenshots/step2-search-results.jpg" },
+      ],
       prompt: null,
       note: null,
       warning: null,
